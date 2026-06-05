@@ -4,7 +4,34 @@
   "description": "Aozora Bunko Search & Reader with TTS",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "build": "electron-builder"
+  },
+  "build": {
+    "appId": "com.aozora.viewer",
+    "productName": "AozoraViewer",
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "target": [
+        "nsis"
+      ]
+    },
+    "mac": {
+      "target": [
+        "dmg"
+      ],
+      "identity": null
+    },
+    "files": [
+      "index.html",
+      "main.js",
+      "script.js",
+      "style.css",
+      "aozora_books.csv",
+      "package.json"
+    ]
   },
   "keywords": [],
   "author": "",
