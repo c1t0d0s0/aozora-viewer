@@ -2,22 +2,56 @@ document.addEventListener('DOMContentLoaded', () => {
     // Node.jsモジュールの読み込み（Electron環境用）
     let fs = null;
     let path = null;
+    let ipcRenderer = null;
     let cacheDir = '';
+    let bookmarksStore = {};
+
     try {
         fs = require('fs');
         path = require('path');
+        ipcRenderer = require('electron').ipcRenderer;
     } catch (e) {
         console.warn('Node.js modules not available. Offline caching disabled.');
     }
 
-    if (fs && path) {
-        cacheDir = path.join(__dirname, 'book_cache');
-        try {
-            if (!fs.existsSync(cacheDir)) {
+    async function initStorage() {
+        if (ipcRenderer) {
+            const loaded = await ipcRenderer.invoke('bookmarks:load');
+            if (loaded && Object.keys(loaded).length > 0) {
+                bookmarksStore = loaded;
+            } else {
+                const legacyJson = localStorage.getItem('aozora_bookmarks');
+                if (legacyJson) {
+                    try {
+                        bookmarksStore = JSON.parse(legacyJson);
+                        await persistBookmarks();
+                        localStorage.removeItem('aozora_bookmarks');
+                        console.log('Migrated bookmarks from localStorage to userData');
+                    } catch (err) {
+                        console.error('Failed to migrate bookmarks from localStorage:', err);
+                        bookmarksStore = {};
+                    }
+                }
+            }
+
+            const paths = await ipcRenderer.invoke('storage:get-paths');
+            cacheDir = paths.cacheDir;
+            if (fs && cacheDir) {
                 fs.mkdirSync(cacheDir, { recursive: true });
             }
-        } catch (e) {
-            console.error('Failed to create cache directory:', e);
+        } else if (fs && path) {
+            cacheDir = path.join(__dirname, 'book_cache');
+            fs.mkdirSync(cacheDir, { recursive: true });
+            const legacyJson = localStorage.getItem('aozora_bookmarks');
+            bookmarksStore = legacyJson ? JSON.parse(legacyJson) : {};
+        }
+    }
+
+    async function persistBookmarks() {
+        if (ipcRenderer) {
+            await ipcRenderer.invoke('bookmarks:save', bookmarksStore);
+        } else {
+            localStorage.setItem('aozora_bookmarks', JSON.stringify(bookmarksStore));
         }
     }
 
@@ -230,7 +264,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 // しおりを復元
                 const bookmark = getBookmark(book.url);
-                if (bookmark && bookmark.progress) {
+                if (bookmark && bookmark.progress != null) {
                     setTimeout(() => {
                         const maxScroll = textContent.scrollWidth - textContent.clientWidth;
                         textContent.scrollLeft = - (bookmark.progress * maxScroll);
@@ -259,34 +293,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- しおり（ブックマーク）管理機能 ---
     function getBookmarks() {
-        const bookmarksJson = localStorage.getItem('aozora_bookmarks');
-        try {
-            return bookmarksJson ? JSON.parse(bookmarksJson) : {};
-        } catch (e) {
-            console.error('Error parsing bookmarks:', e);
-            return {};
-        }
+        return bookmarksStore;
     }
 
-    function saveBookmark(book, progress) {
+    async function saveBookmark(book, progress) {
         if (progress < 0) progress = 0;
         if (progress > 1) progress = 1;
 
-        const bookmarks = getBookmarks();
-        bookmarks[book.url] = {
+        bookmarksStore[book.url] = {
             title: book.title,
             author: book.author,
             url: book.url,
             progress: progress,
             lastRead: Date.now()
         };
-        localStorage.setItem('aozora_bookmarks', JSON.stringify(bookmarks));
+        await persistBookmarks();
     }
 
-    function removeBookmark(url) {
-        const bookmarks = getBookmarks();
-        delete bookmarks[url];
-        localStorage.setItem('aozora_bookmarks', JSON.stringify(bookmarks));
+    async function removeBookmark(url) {
+        delete bookmarksStore[url];
+        await persistBookmarks();
 
         // キャッシュファイルの削除
         if (fs && path && cacheDir) {
@@ -366,10 +392,10 @@ document.addEventListener('DOMContentLoaded', () => {
             
             li.querySelector('.book-info-container').onclick = () => openReader(book);
             
-            li.querySelector('.delete-bookmark-btn').onclick = (e) => {
+            li.querySelector('.delete-bookmark-btn').onclick = async (e) => {
                 e.stopPropagation();
                 if (confirm(`「${book.title}」のしおりを削除しますか？`)) {
-                    removeBookmark(book.url);
+                    await removeBookmark(book.url);
                     displayReadingList();
                 }
             };
@@ -474,13 +500,13 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // しおりを挟むボタンのクリックイベント
-    addBookmarkBtn.onclick = () => {
+    addBookmarkBtn.onclick = async () => {
         if (!currentBook || isBookLoading) return;
         
         const maxScroll = textContent.scrollWidth - textContent.clientWidth;
         const progress = maxScroll > 0 ? Math.abs(textContent.scrollLeft) / maxScroll : 0;
         
-        saveBookmark(currentBook, progress);
+        await saveBookmark(currentBook, progress);
         setBookmarkButtonState(true);
     };
 
@@ -497,6 +523,11 @@ document.addEventListener('DOMContentLoaded', () => {
     stopBtn.onclick = stopText;
 
     // 初期起動処理
-    initCSV();
-    displayReadingList();
+    async function bootstrap() {
+        await initStorage();
+        await initCSV();
+        displayReadingList();
+    }
+
+    bootstrap();
 });
