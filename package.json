@@ -1,19 +1,21 @@
 {
-  "name": "aozora-reader",
-  "version": "1.0.0",
+  "name": "aozora-viewer",
+  "version": "1.0.1",
   "description": "Aozora Bunko Search & Reader with TTS",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
+    "build:icon": "node scripts/make-icons.cjs",
     "build": "electron-builder --win --publish never"
   },
   "build": {
-    "appId": "com.aozora.viewer",
+    "appId": "net.cuio.aozora.viewer",
     "productName": "AozoraViewer",
     "directories": {
       "output": "dist"
     },
     "win": {
+      "icon": "build/icon.ico",
       "target": [
         "nsis"
       ],
@@ -25,6 +27,7 @@
       "script.js",
       "style.css",
       "aozora_books.csv",
+      "build/icon.ico",
       "package.json"
     ]
   },
@@ -33,6 +36,8 @@
   "license": "ISC",
   "devDependencies": {
     "electron": "^42.3.3",
-    "electron-builder": "^26.8.1"
+    "electron-builder": "^26.8.1",
+    "png-to-ico": "^2.1.8",
+    "pngjs": "^7.0.0"
   }
 }
