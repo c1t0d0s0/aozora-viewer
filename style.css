@@ -249,6 +249,87 @@ main {
     100% { transform: rotate(360deg); }
 }
 
+.reader-progress {
+    font-size: 1rem;
+    color: var(--accent-color);
+    font-weight: bold;
+}
+
+.reader-header .bookmark-btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    border-radius: 4px;
+    background-color: var(--accent-color);
+    border: 1px solid var(--accent-color);
+    transition: all 0.2s ease;
+}
+
+.reader-header .bookmark-btn.saved {
+    background-color: #2e7d32;
+    border-color: #2e7d32;
+}
+
+.reader-header .bookmark-btn.saved:hover {
+    background-color: #1b5e20;
+}
+
+/* Bookmark list items styling */
+.bookmark-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.book-info-container {
+    flex: 1;
+}
+
+.progress-container {
+    margin-top: 0.6rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.progress-bar-bg {
+    flex: 1;
+    max-width: 200px;
+    height: 8px;
+    background-color: var(--border-color);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background-color: var(--accent-color);
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.progress-text {
+    font-size: 0.85rem;
+    color: #666;
+    font-weight: bold;
+}
+
+.delete-bookmark-btn {
+    padding: 0.4rem 0.8rem;
+    background-color: transparent;
+    color: #cc2222;
+    border: 1px solid #cc2222;
+    font-size: 0.85rem;
+    border-radius: 2px;
+    font-weight: normal;
+    transition: all 0.2s;
+}
+
+.delete-bookmark-btn:hover {
+    background-color: #cc2222;
+    color: #fff;
+}
+
 @media (max-width: 600px) {
     #textContent {
         padding: 2rem 1.5rem;
@@ -256,6 +337,14 @@ main {
     }
     .book-info {
         margin-left: 1.5rem;
+    }
+    .bookmark-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.8rem;
+    }
+    .delete-bookmark-btn {
+        align-self: flex-end;
     }
 }
 
