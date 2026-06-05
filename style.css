@@ -1,0 +1,261 @@
+:root {
+    --bg-color: #f4ecd8; /* 古書のようなベージュ */
+    --header-bg: #e8dfc4;
+    --text-color: #333333; /* 濃いグレー */
+    --accent-color: #8b4513; /* サドルブラウン */
+    --card-bg: #fdfaf0;
+    --border-color: #d3c4a9;
+    --btn-text: #ffffff;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: "Sawarabi Mincho", "Hiragino Mincho ProN", "MS Mincho", serif;
+    line-height: 1.8;
+    overflow-x: hidden;
+}
+
+#app {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+header {
+    background-color: var(--header-bg);
+    padding: 1.5rem;
+    text-align: center;
+    border-bottom: 2px solid var(--border-color);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+h1 {
+    font-size: 1.8rem;
+    margin-bottom: 1.2rem;
+    color: var(--accent-color);
+    letter-spacing: 0.2rem;
+    font-weight: 700;
+}
+
+.search-container {
+    display: flex;
+    max-width: 600px;
+    margin: 0 auto;
+    gap: 0.5rem;
+}
+
+input[type="text"] {
+    flex: 1;
+    padding: 0.8rem;
+    border-radius: 2px;
+    border: 1px solid var(--border-color);
+    background-color: #fff;
+    color: #333;
+    outline: none;
+    font-family: inherit;
+}
+
+input[type="text"]:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 3px rgba(139, 69, 19, 0.3);
+}
+
+button {
+    padding: 0.8rem 1.5rem;
+    border-radius: 2px;
+    border: none;
+    background-color: var(--accent-color);
+    color: var(--btn-text);
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-family: inherit;
+}
+
+button:hover {
+    background-color: #a0522d;
+}
+
+button:active {
+    transform: translateY(1px);
+}
+
+main {
+    flex: 1;
+    padding: 1rem;
+    max-width: 800px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+#statusMessage {
+    text-align: center;
+    margin-top: 2rem;
+    color: #666;
+    font-style: italic;
+}
+
+#bookList {
+    list-style: none;
+    margin-top: 1.5rem;
+}
+
+.book-item {
+    background-color: var(--card-bg);
+    padding: 1.2rem;
+    margin-bottom: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.03);
+}
+
+.book-item:hover {
+    background-color: #fff;
+    transform: translateX(5px);
+    border-color: var(--accent-color);
+}
+
+.book-title {
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin-bottom: 0.3rem;
+    color: #111;
+}
+
+.book-author {
+    font-size: 0.95rem;
+    color: var(--accent-color);
+}
+
+/* Reader Overlay */
+#readerOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-color);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+}
+
+.reader-header {
+    padding: 1rem 1.5rem;
+    background-color: var(--header-bg);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.tts-controls {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.hidden {
+    display: none !important;
+}
+
+#textContent {
+    flex: 1;
+    padding: 3rem 4rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    font-size: 1.3rem;
+    white-space: pre-wrap;
+    text-align: justify;
+    color: #222;
+}
+
+/* 縦書き設定 */
+.vertical-text {
+    writing-mode: vertical-rl;
+    -webkit-writing-mode: vertical-rl;
+    font-family: "Sawarabi Mincho", serif;
+}
+
+.book-info {
+    margin-left: 3rem;
+    border-left: 1px solid var(--border-color);
+    padding-left: 1rem;
+}
+
+.book-info h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: var(--accent-color);
+}
+
+.book-info p {
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+}
+
+/* スクロールバーのカスタマイズ */
+#textContent::-webkit-scrollbar {
+    height: 10px;
+}
+#textContent::-webkit-scrollbar-track {
+    background: var(--bg-color);
+}
+#textContent::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 5px;
+}
+#textContent::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-color);
+}
+
+/* Loading Overlay */
+#loadingOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(244, 236, 216, 0.8);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #d3c4a9;
+    border-top: 4px solid var(--accent-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 1rem;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@media (max-width: 600px) {
+    #textContent {
+        padding: 2rem 1.5rem;
+        font-size: 1.15rem;
+    }
+    .book-info {
+        margin-left: 1.5rem;
+    }
+}
+

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>青空読書 - Aozora Reading</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sawarabi+Mincho&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <header>
+            <h1>青空読書</h1>
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="作品名や著者名で検索..." autocomplete="off">
+                <button id="searchBtn">検索</button>
+            </div>
+        </header>
+
+        <main id="resultArea">
+            <div id="statusMessage">検索キーワードを入力してください</div>
+            <ul id="bookList"></ul>
+        </main>
+
+        <!-- 読書・読み上げオーバーレイ -->
+        <div id="readerOverlay" class="hidden">
+            <div class="reader-header">
+                <button id="closeReader">戻る</button>
+                <div class="tts-controls">
+                    <button id="playBtn">再生</button>
+                    <button id="pauseBtn" class="hidden">一時停止</button>
+                    <button id="stopBtn">停止</button>
+                </div>
+            </div>
+            <div id="textContent" class="vertical-text">
+                <!-- 本文がここに表示されます -->
+            </div>
+            <div id="loadingOverlay" class="hidden">
+                <div class="spinner"></div>
+                <p>読み込み中...</p>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
