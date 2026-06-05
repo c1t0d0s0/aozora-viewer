@@ -64,8 +64,6 @@ npx electron-builder --linux
 ※ ビルド成果物は `dist` フォルダに生成されます。
 
 ## 使用しているデータ・API
-- **作品リスト**: [青空文庫 公開中作家別作品一覧](https://www.aozora.gr.jp/index_pages/person_all.html) のCSVデータを使用。
+- **作品リスト**: [青空文庫API用データ](https://docs.google.com/spreadsheets/d/1n04e6POI04TBt-3HJUH10-T5cxhPZHcBWmFA4tSHjqE/edit?gid=288090143#gid=288090143) のCSVデータを使用。
 - **本文データ**: [青空文庫](https://www.aozora.gr.jp/) の公式サイトより直接取得。
 
-## ライセンス
-このソフトウェアは、青空文庫の利用規約および各作品の著作権の状態に従って利用してください。
