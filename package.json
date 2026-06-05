@@ -1,12 +1,14 @@
 {
   "name": "aozora-viewer",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "Aozora Bunko Search & Reader with TTS",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
     "build:icon": "node scripts/make-icons.cjs",
-    "build": "electron-builder --win --publish never"
+    "build": "electron-builder --win --publish never",
+    "build:win": "electron-builder --win --publish never",
+    "build:mac": "electron-builder --mac --publish never"
   },
   "build": {
     "appId": "net.cuio.aozora.viewer",
@@ -21,6 +23,13 @@
       ],
       "signAndEditExecutable": false
     },
+    "mac": {
+      "icon": "build/icon.png",
+      "target": [
+        "dmg"
+      ],
+      "identity": null
+    },
     "files": [
       "index.html",
       "main.js",
@@ -28,6 +37,7 @@
       "style.css",
       "aozora_books.csv",
       "build/icon.ico",
+      "build/icon.png",
       "package.json"
     ]
   },
