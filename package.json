@@ -16,7 +16,8 @@
     "win": {
       "target": [
         "nsis"
-      ]
+      ],
+      "sign": null
     },
     "mac": {
       "target": [
