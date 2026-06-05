@@ -17,13 +17,7 @@
       "target": [
         "nsis"
       ],
-      "sign": null
-    },
-    "mac": {
-      "target": [
-        "dmg"
-      ],
-      "identity": null
+      "signAndEditExecutable": false
     },
     "files": [
       "index.html",
