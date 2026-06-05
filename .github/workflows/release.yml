@@ -32,7 +32,7 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --no-progress --prefer-offline --no-audit --loglevel verbose
 
       - name: Build Electron App
         run: npm run build
