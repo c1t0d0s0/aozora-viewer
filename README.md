@@ -1,69 +1,68 @@
 # 青空読書 (Aozora Viewer)
 
-青空文庫の作品を検索・閲覧・読み上げることができる、Electronベースのデスクトップアプリケーションです。
-古書のようなベージュ系の背景に、エア草子風の縦書き表示で快適に読書を楽しむことができます。
+青空文庫の作品を検索・閲覧・読み上げることができる、Flutterベースのマルチプラットフォーム（Windows, macOS, iOS, Android）アプリケーションです。
+Material 3 に準拠したモダンで目に優しいダークテーマと、美しい和風明朝フォント（さわらび明朝）を組み込み、快適な読書空間を提供します。
 
 ## 主な機能
-- **高速な検索**: ローカルの `aozora_books.csv` を使用し、作品名や著者名で瞬時に検索可能。
-- **縦書き表示**: CSSの `writing-mode` を活用した、右から左へ流れる美しい縦書きレイアウト。
-- **読み上げ (TTS)**: Web Speech API を利用し、選択した作品を自動で読み上げ。
-- **CORS制限なし**: Electronを採用することでブラウザのセキュリティ制限を回避し、青空文庫から直接データを取得。
-- **目に優しいデザイン**: 古書をイメージしたベージュ基調の落ち着いた配色。
+- **マルチプラットフォーム対応**: Flutter の強みを活かし、PC（Windows, macOS）とモバイル（iOS, Android）の両方に対応。
+- **超高速な書籍検索**: ローカルに内蔵された `aozora_books.csv` データベースを瞬時にパース・インクリメンタル検索。
+- **オフライン対応（自動キャッシュ）**: 一度読み込んだ作品は端末内に自動保存されるため、次回からはインターネット接続がない環境（オフライン）でも読書が可能です。
+- **しおり（読書進捗）保存**: 各作品のスクロール位置（読了率%）を自動で保存・管理。いつでもしおりを挟んだ位置から読書を再開できます。
+- **音声読み上げ (TTS)**: プラットフォームネイティブの高性能TTS（音声合成）エンジンを使用し、ハンズフリーで小説の朗読を聴くことができます。
+- **目に優しいダークデザイン**: 読書時の目の疲労を軽減するため、コントラストを調整した美しいダークテーマを採用。
 
 ## 必要条件
-- [Node.js](https://nodejs.org/) (LTS推奨)
-- [npm](https://www.npmjs.com/) (Node.jsに同梱)
+- [Flutter SDK](https://flutter.dev/docs/get-started/install) (推奨: v3.19.0 以上)
+- [Dart SDK](https://dart.dev/)
 
 ## セットアップと実行
 
-### 1. リポジトリの準備
-このフォルダ（`aozora`）に移動します。
-
-### 2. 依存関係のインストール
-以下のコマンドを実行して、Electronをインストールします。
+### 1. 依存関係の解決
+リポジトリのルートディレクトリで以下のコマンドを実行します。
 
 ```bash
-npm install
+flutter pub get
 ```
 
-### 3. アプリケーションの起動
-以下のコマンドでアプリを起動します。
+### 2. アプリケーションの起動
+任意のデバイスまたはシミュレーターを起動し、以下のコマンドを実行します。
 
 ```bash
-npm start
+flutter run
 ```
 
-## ビルド方法（実行ファイルの作成）
-
-実行可能なバイナリ（.exe や .app）を作成するには、`electron-builder` などのツールを使用します。
-
-### 1. ツールをインストール
+### 3. テストの実行
 ```bash
-npm install --save-dev electron-builder
+flutter test
 ```
 
-### 2. ビルドの実行
-ターゲットとするOSの環境で実行することが推奨されます。
+## 各プラットフォーム向けビルド方法
 
+### Windows
 ```bash
-# Windows向け (Windows環境で実行、またはLinux環境では wine が必要)
-npx electron-builder --win
+flutter build windows --release
+```
+※ ビルドされた成果物は `build/windows/x64/runner/Release/` に出力されます。
 
-# macOS向け (macOS環境のみ可能)
-npx electron-builder --mac
+### macOS
+```bash
+flutter build macos --release
+```
+※ ビルドされた成果物は `build/macos/Build/Products/Release/` に出力されます。
 
-# Linux向け
-npx electron-builder --linux
+### Android
+```bash
+flutter build apk --release
 ```
 
-**Linux環境からWindows向けにビルドする場合の注意:**
-上記のエラー（`wine is required`）が発生した場合は、システムに `wine` をインストールする必要があります。
-- Ubuntu/Debian: `sudo apt install wine`
-- その他のOS: 各パッケージマネージャーで `wine` をインストールしてください。
+### iOS
+```bash
+flutter build ios --release
+```
 
-※ ビルド成果物は `dist` フォルダに生成されます。
+## CI/CD (自動ビルドとリリース)
+GitHub Actions が設定されており、リポジトリに `v*`（例: `v1.2.0`）形式のバージョンタグをプッシュすると、GitHub Runners 上で Windows / macOS 向けのリリースビルドが自動で実行され、成果物が GitHub Releases に自動アップロードされます。
 
 ## 使用しているデータ・API
-- **作品リスト**: [青空文庫API用データ](https://docs.google.com/spreadsheets/d/1n04e6POI04TBt-3HJUH10-T5cxhPZHcBWmFA4tSHjqE/edit?gid=288090143#gid=288090143) のCSVデータを使用。
-- **本文データ**: [青空文庫](https://www.aozora.gr.jp/) の公式サイトより直接取得。
-
+- **作品リスト**: [青空文庫API用データ](https://docs.google.com/spreadsheets/d/1n04e6POI04TBt-3HJUH10-T5cxhPZHcBWmFA4tSHjqE/edit?gid=288090143#gid=288090143) のCSVデータ (`aozora_books.csv`)。
+- **本文データ**: [青空文庫](https://www.aozora.gr.jp/) の公式サイトより直接取得（Shift_JIS自動デコード対応）。

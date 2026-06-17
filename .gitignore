@@ -1,24 +1,58 @@
-# Dependency directories
-node_modules/
-
-# Build outputs
-dist/
-*.exe
-*.dmg
-*.AppImage
-*.zip
-
-# OS generated files
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
 .DS_Store
+.atom/
+.buildlog/
+.history
+.project
+.directory
+.idea/
+.vscode/
 Thumbs.db
 
-# Log files
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+# Flutter/Dart-specific
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+/build/
 
-# IDE/Editor files
-.vscode/
-.idea/
-*.swp
-*.swo
+# Android-specific
+/android/app/key.properties
+/android/.gradle/
+/android/local.properties
+/android/app/local.properties
+*.apk
+*.ap_
+*.aab
+
+# iOS/macOS-specific
+/ios/Flutter/Generated.xcconfig
+/ios/Flutter/flutter_export_environment.sh
+/ios/Flutter/App.framework
+/ios/Flutter/Flutter.framework
+/ios/Flutter/Flutter.podspec
+/macos/Flutter/GeneratedMacShare.xcconfig
+/macos/Flutter/ephemeral/
+**/doc/api/
+/ios/.symlinks/
+/macos/.symlinks/
+
+# Windows-specific
+/windows/flutter/ephemeral/
+
+# Linux-specific
+/linux/flutter/ephemeral/
+
+# Web-specific
+/web/index.html.tmp
+
+# Legacy Electron artifacts (just in case)
+node_modules/
+dist/
+*.AppImage
