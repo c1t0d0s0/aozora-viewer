@@ -19,10 +19,7 @@ class BookService {
   Future<List<Book>> loadBooksFromCSV() async {
     try {
       final csvText = await rootBundle.loadString('aozora_books.csv');
-      final List<List<dynamic>> rows = const CsvToListConverter(
-        shouldParseNumbers: false,
-        allowInvalid: true,
-      ).convert(csvText);
+      final List<List<dynamic>> rows = csv.decode(csvText);
 
       final List<Book> books = [];
       for (final row in rows) {
