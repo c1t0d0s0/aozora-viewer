@@ -65,7 +65,7 @@ jobs:
       - name: Package macOS Release
         run: |
           cd build/macos/Build/Products/Release
-          zip -r ../../../../aozora_viewer-macos.zip aozora_viewer.app
+          zip -r "$GITHUB_WORKSPACE/aozora_viewer-macos.zip" aozora_viewer.app
 
       - name: Upload Release Artifacts
         uses: softprops/action-gh-release@v2
