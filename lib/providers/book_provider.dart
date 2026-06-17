@@ -14,8 +14,17 @@ final booksListProvider = FutureProvider<List<Book>>((ref) async {
   return service.loadBooksFromCSV();
 });
 
-// 検索キーワードのプロバイダー
-final searchQueryProvider = StateProvider<String>((ref) => '');
+// 検索キーワードのプロバイダー (Riverpod 3 Notifier)
+class SearchQueryNotifier extends Notifier<String> {
+  @override
+  String build() => '';
+
+  void setQuery(String val) {
+    state = val;
+  }
+}
+
+final searchQueryProvider = NotifierProvider<SearchQueryNotifier, String>(SearchQueryNotifier.new);
 
 // フィルタリングされた書籍リストのプロバイダー (最大50件)
 final filteredBooksProvider = Provider<AsyncValue<List<Book>>>((ref) {
@@ -34,12 +43,15 @@ final filteredBooksProvider = Provider<AsyncValue<List<Book>>>((ref) {
   });
 });
 
-// しおり一覧を管理する StateNotifier
-class BookmarksNotifier extends StateNotifier<Map<String, Bookmark>> {
-  final BookService _bookService;
+// しおり一覧を管理する Notifier (Riverpod 3)
+class BookmarksNotifier extends Notifier<Map<String, Bookmark>> {
+  late final BookService _bookService;
 
-  BookmarksNotifier(this._bookService) : super({}) {
+  @override
+  Map<String, Bookmark> build() {
+    _bookService = ref.watch(bookServiceProvider);
     loadBookmarks();
+    return {};
   }
 
   // しおりを読み込み
@@ -69,10 +81,7 @@ class BookmarksNotifier extends StateNotifier<Map<String, Bookmark>> {
 }
 
 // しおり用プロバイダー
-final bookmarksProvider = StateNotifierProvider<BookmarksNotifier, Map<String, Bookmark>>((ref) {
-  final service = ref.watch(bookServiceProvider);
-  return BookmarksNotifier(service);
-});
+final bookmarksProvider = NotifierProvider<BookmarksNotifier, Map<String, Bookmark>>(BookmarksNotifier.new);
 
 // 最近読んだ本（しおり）を最終読了日時順にソートしたリスト
 final sortedBookmarksListProvider = Provider<List<Bookmark>>((ref) {

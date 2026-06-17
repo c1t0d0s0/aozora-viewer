@@ -50,7 +50,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
                               icon: const Icon(Icons.clear),
                               onPressed: () {
                                 _searchController.clear();
-                                ref.read(searchQueryProvider.notifier).state = '';
+                                ref.read(searchQueryProvider.notifier).setQuery('');
                               },
                             )
                           : null,
@@ -61,10 +61,10 @@ class _HomeViewState extends ConsumerState<HomeView> {
                       contentPadding: const EdgeInsets.symmetric(horizontal: 16),
                     ),
                     onChanged: (val) {
-                      ref.read(searchQueryProvider.notifier).state = val;
+                      ref.read(searchQueryProvider.notifier).setQuery(val);
                     },
                     onSubmitted: (val) {
-                      ref.read(searchQueryProvider.notifier).state = val;
+                      ref.read(searchQueryProvider.notifier).setQuery(val);
                     },
                   ),
                 ),
